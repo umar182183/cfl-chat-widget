@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!-- <link rel="stylesheet" href="css/intlTelInput.css" />
+    <script src="js/intlTelInput.min.js"></script> -->
+    <script src="js/ajax.googleapis.jquery.min.js"></script>
+    <!-- <script src="js/ajax.cloudflare.popper.min.js"></script> -->
+    <script src="js/config.js"></script>
+    <script src="js/amazon-connect-chat-interfacev1.js"></script>
+    <script src="js/jquery-3.1.0.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/js.pdf.min.js"></script>
+
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+    <script src="assets/fonts/all-fonts.js"></script>
+    <script src="js/jquery-1.12.4.js"></script>
+    <!-- <script src="js/html2canvas.js"></script> -->
+    <link href="css/styles.css" rel="stylesheet" />
+    <link href="./assets/fonts/CF-Fonts/CF-Fonts/style.css" rel="stylesheet" />
+    <script src="./js/scripts.js"></script>
+    <script src="js/ui.js" defer></script>
+    <script src="js/chat.js"></script>
+</head>
+
+<body id="page-top" onload="setWorkingHours();showHideScreensBasedOnConfig()">
+
+    <div id="showhide" style="display: block;" class="open-button support-btn" onclick="showChatForm()">
+        <div class="close-btn close-update-btn">
+            <img src="assets/img/Vector.svg" alt="">
+            <p>Chat</p>
+        </div>
+    </div>
+    <div id="myDIV" style="display: none;">
+        <div class="headstyle brand-c-b">
+            <h2 id="title">Community Fibre Support</h2>
+            <div class="close-chat">
+                <button onclick="minimizeForm()">
+                    <img src="assets/img/min-icon.svg">
+                </button>
+            </div>
+            <!-- <div id="showhide" style="display: block;" class="open-button" onclick="expandContinueChat()">
+                <div>
+                    <h2>Community Fibre Support</h2>
+                </div>
+            </div> -->
+        </div>
+        <div id="textalign" class="join-chat">
+            <div id="root" class="chat-b">
+            </div>
+        </div>
+        <div onclick="endchatnow()" class="endbtn"> <button id="disableEndChat" style="display: block;" class="endbutton">Close</button> </div>
+    </div>
+    <div id="activeChat" style="display: none;" class="open-button">
+        <div class="headstyle">
+            <h2>Community Fibre Support</h2>
+            <div class="close-chat">
+                <!-- <button onclick="minimizeFlagScreen()">
+                    <img src="assets/img/maxim.svg">
+                </button> -->
+                <button onclick="expandContinueChat()">
+                    <img src="assets/img/maxim.svg">
+                </button>
+
+            </div>
+        </div>
+    </div>
+    <!-- Select your country -->
+    <div class="flag" id="flagContainer" style="display: none;">
+        <div class="form-container">
+            <div class="headstyle">
+                <h2>Community Fibre Support</h2>
+                <div class="close-chat">
+                    <button onclick="minimizeFlagScreen(1)">
+                        <img src="assets/img/min-icon.svg">
+                    </button>
+                    <button onclick="minimizeFlagScreen(1)">
+                        <img src="assets/img/close-icon.svg">
+                    </button>
+                </div>
+            </div>
+            <div class="containerform" id="inputform">
+                <div class="form-control">
+                    <label id="fnameLabel">First Name *</label>
+                    <input type="text" id="fname" name="firstname" placeholder="John"
+                        onchange="errorMessagesValidations()" required>
+                    <div class="error-form" id="myText"></div>
+                </div>
+                <div class="form-control">
+                    <label id="emailLabel">Email*</label>
+                    <input type="text" id="email" name="Email" placeholder="e.g. john.smith@mail.com" class="fstName"
+                        onchange="errorMessagesValidations()">
+                    <span class="error-form" id="myText3"></span>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Topic*</label>
+                    <div id="topic">
+                    </div>
+                    <span class="error-form" id="myText4"></span>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Subject*</label>
+                    <div id="Subject"></div>
+                    <span class="error-form" id="myText5"></span>
+                    <!-- <div id="sales">
+                        <select class="form-control" id="exampleFormControlSelect1">
+                            <option>Please select a subject</option>
+                            <option>New sales enquiry</option>
+                            <option>Renewals</option>
+                            <option>Add products</option>
+                            <option>No internet</option>
+                            <option>Speed issues</option>
+                            <option>WiFi issues</option>
+                            <option>WiFi issues</option>
+                            <option>Internet dropouts</option>
+                            <option>Billing</option>
+                            <option>Installation</option>
+                            <option>Service call</option>
+                            <option>Account management</option>
+                            <option>Cancellation</option>
+                            <option>Other</option>
+                        </select>
+                    </div> -->
+                </div>
+                <button id="startchat" onclick="submitme()" class="submitbutton brand-c-b"> Start Chat</button>
+            </div>
+            <div id="errorMessageDiv" class="select-flag">
+                <span id="errorMessage">
+                </span>
+            </div>
+        </div>
+    </div>
+    <!-- Form Popup -->
+    <div class="chat-popup" id="myForm" style="display: none;">
+        <div class="form-container">
+            <div class="headstyle">
+                <h2>Community Fibre Support</h2>
+                <div class="close-chat">
+                    <button onclick="minimizeFlagScreen(1)">
+                        <img src="assets/img/min-icon.svg">
+                    </button>
+                    <button onclick="minimizeFlagScreen(1)">
+                        <img src="assets/img/close-icon.svg">
+                    </button>
+                </div>
+            </div>
+            <div class="containerform" id="inputform">
+                <p id="notificationText"> Please share your details linked with your Dialect account</p>
+                <div class="form-control">
+                    <label id="fnameLabel">First Name *</label>
+                    <input type="text" id="fname" name="firstname" placeholder="Enter first name" required>
+                    <div class="error-form" id="myText"></div>
+                </div>
+                <div class="form-control">
+                    <label id="lnameLabel">Last Name *</label>
+                    <input type="text" id="lname" name="lastname" placeholder="Enter last name" required>
+                    <div class="error-form" id="myText1"></div>
+                </div>
+                <div class="form-control">
+                    <label id="phoneLabel">Phone *</label>
+                    <div class="select-cntry">
+                        <input type="tel" id="phone" style="display: none;">
+                        <input type="text" id="phoneExtended" name="phoneNo" placeholder="Enter phone: *">
+                        <div class="error-form" id="myText4"></div>
+                    </div>
+                </div>
+                <div class="form-control">
+                    <label id="emailLabel">Email</label>
+                    <input type="text" id="email" name="Email" placeholder="Enter email">
+                    <span id="myText3"></span>
+                </div>
+
+                <button id="startchat" onclick="submitme()" class="submitbutton brand-c-b"> Start Chat</button>
+            </div>
+            <div id="errorMessageDiv" class="select-flag">
+                <span id="errorMessage">
+                </span>
+            </div>
+        </div>
+    </div>
+    <!-- Thank you popup -->
+    <div class="Thanks-Popup" id="Thanks">
+        <div class="form-container thanks-container">
+            <div class="headstyle">
+                <h2>Community Fibre Support</h2>
+                <!-- <div class="close-chat">
+                    <button onclick="minimizeFlagScreen()">
+                        <img src="assets/img/min-icon.svg">
+                    </button>
+                    <button onclick="minimizeFlagScreen()">
+                        <img src="assets/img/close-icon.svg">
+                    </button>
+                </div> -->
+            </div>
+            <div class="thankyouwrapper">
+                <h2 id="chattingus">
+                    Thanks for chatting with us
+                </h2>
+                <p id="asking">
+                    How happy are you with the service you’ve received on your chat today on a scale of 0 to 10?
+                </p>
+                <div class="nmb-info">
+                    <div class="info">
+                        <div id="notlike">
+                            0 = Poor
+                        </div>
+                        <div id="extreamlylike">
+                            10 = Excellent
+                        </div>
+                    </div>
+                    <div class="numberss">
+                        <button id="0" onclick="feedbackvalue(value)" value="0">0</button>
+                        <button id="1" onclick="feedbackvalue(value)" value="1">1</button>
+                        <button id="2" onclick="feedbackvalue(value)" value="2">2</button>
+                        <button id="3" onclick="feedbackvalue(value)" value="3">3</button>
+                        <button id="4" onclick="feedbackvalue(value)" value="4">4</button>
+                        <button id="5" onclick="feedbackvalue(value)" value="5">5</button>
+                        <button id="6" onclick="feedbackvalue(value)" value="6">6</button>
+                        <button id="7" onclick="feedbackvalue(value)" value="7">7</button>
+                        <button id="8" onclick="feedbackvalue(value)" value="8">8</button>
+                        <button id="9" onclick="feedbackvalue(value)" value="9">9</button>
+                        <button id="10" onclick="feedbackvalue(value)" value="10">10</button>
+                    </div>
+                </div>
+                <!-- <textarea id="comment" class="textboxx " placeholder="Add your comment"></textarea> -->
+                <!-- <button onclick="hidethanks(), getcomment()" class="endchatbutton brand-c-b" data-i18n="endChat" -->
+                <!-- <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                        <label class="form-check-label" for="flexCheckChecked">
+                            Click to email a copy of today's chat
+                        </label>
+                      </div> -->
+                <button onclick="hidethanks(),getcomment()" class="endchatbutton brand-c-b" data-i18n="endChat"
+                    id="endchat">
+                    CLOSE
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JS-->
+    <script src="js/jquery.min.js"></script>
+    <!-- <script src="js/bootstrap.bundle.min.js"></script> -->
+    <!-- Third party plugin JS-->
+    <script src="js/jquery.easing.min.js"></script>
+    <!-- Contact form JS-->
+    <script src="assets/mail/jqBootstrapValidation.js"></script>
+    <script src="assets/mail/contact_me.js"></script>
+
+    <!-- Core theme JS-->
+    <script>
+        logoConfigurations();
+        changeClassProperties();
+    </script>
+    <!-- <script type="text/javascript">
+        var input = document.querySelector("#phone");
+        var iti = window.intlTelInput(input, {
+            initialCountry: "",
+            //initialCountry  : item.langCode.replace('+',''),
+            separateDialCode: true,
+            //utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.3/build/js/utils.js",
+        });
+        // store the instance variable so we can access it in the console e.g. window.iti.getNumber()
+        window.iti = iti;
+        //For first time dial code initialization
+        setTimeout(() => {
+            let tempNumber = iti.getSelectedCountryData();
+            document.getElementById('phone').value = '+' + tempNumber.dialCode;
+            firstTimeDialCode = document.getElementById('phone').value;
+        }, 0)
+        input.addEventListener("countrychange", function () {
+            let number = iti.getSelectedCountryData();
+            document.getElementById('phone').value = '+' + number.dialCode;
+            firstTimeDialCode = document.getElementById('phone').value;
+            // do something with iti.getSelectedCountryData()
+        });
+    </script> -->
+</body>
+
+</html>

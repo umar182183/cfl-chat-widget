@@ -1,0 +1,32 @@
+@font-face {
+  font-family: "arboria";
+  src: url("./Arboria-Book.woff2") format("woff2"),
+    url("./Arboria-Book.woff") format("woff"),
+    url("./Arboria-Book.ttf") format("opentype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+}
+@font-face {
+  font-family: "arboria";
+  src: url("./Arboria-Medium.woff2") format("woff2"),
+    url("./Arboria-Medium.woff") format("woff"),
+    url("./Arboria-Medium.ttf") format("opentype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: normal;
+}
+@font-face {
+  font-family: "arboria";
+  src: url("./Arboria-Bold.woff2") format("woff2"),
+    url("./Arboria-Bold.woff") format("woff"),
+    url("./Arboria-Bold.ttf") format("opentype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: normal;
+}
+
+html { font-family: "arboria",sans-serif; }

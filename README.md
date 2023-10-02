@@ -1,1 +1,0 @@
-# cfl-chat-widget
