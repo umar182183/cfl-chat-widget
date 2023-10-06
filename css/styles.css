@@ -631,9 +631,27 @@ button:focus {
     /* margin-top: 7px;
     margin-bottom: 7px; */
 }
+input.phoneNum::placeholder {
+    font-style: italic;
+    border: none;
+}
+input.phoneNum {
+    width: 100%;
+    padding: 10px;
+    border-bottom: 1px solid var(--border);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    box-sizing: border-box;
+    resize: vertical;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 27px;
+}
 input.fstName::placeholder {
     font-style: italic;
-    }
+}
 
 
 .close-update-btn {

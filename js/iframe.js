@@ -58,6 +58,14 @@ function receiveMessage(event) {
     }
     document.getElementById("i-frame").style.zIndex = "1101";
   }
+  else if (event.data == "ChatMinimized") {
+    document.getElementById("i-frame").classList.add('livechat-collapsed');
+    document.getElementById("i-frame").classList.remove('livechat-expanded');
+  }
+  else if (event.data == "ChatExpanded") {
+    document.getElementById("i-frame").classList.add('livechat-expanded');
+    document.getElementById("i-frame").classList.remove('livechat-collapsed');
+  }
   //   else {
   //     document.getElementById("i-frame").style.height = '50px'
   //     document.getElementById("i-frame").style.width = '435px'

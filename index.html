@@ -39,12 +39,15 @@
         </div>
     </div>
     <div id="myDIV" style="display: none;">
-        <div class="headstyle brand-c-b">
+        <div style="cursor: pointer;" class="headstyle brand-c-b" onclick="minimizeForm()">
             <h2 id="title">Community Fibre Support</h2>
             <div class="close-chat">
                 <button onclick="minimizeForm()">
                     <img src="assets/img/min-icon.svg">
                 </button>
+                <button id="disableEndChat" onclick="event.stopPropagation();endchatnow()">
+                    <img src="assets/img/close-icon.svg">
+                </button>        
             </div>
             <!-- <div id="showhide" style="display: block;" class="open-button" onclick="expandContinueChat()">
                 <div>
@@ -56,10 +59,10 @@
             <div id="root" class="chat-b">
             </div>
         </div>
-        <div onclick="endchatnow()" class="endbtn"> <button id="disableEndChat" style="display: block;" class="endbutton">Close</button> </div>
+        <!-- <div onclick="endchatnow()" class="endbtn"> <button id="disableEndChat" style="display: block;" class="endbutton">Close</button> </div> -->
     </div>
     <div id="activeChat" style="display: none;" class="open-button">
-        <div class="headstyle">
+        <div onclick="expandContinueChat()" class="headstyle">
             <h2>Community Fibre Support</h2>
             <div class="close-chat">
                 <!-- <button onclick="minimizeFlagScreen()">
@@ -75,7 +78,7 @@
     <!-- Select your country -->
     <div class="flag" id="flagContainer" style="display: none;">
         <div class="form-container">
-            <div class="headstyle">
+            <div style="cursor: pointer;"  onclick="minimizeFlagScreen(1)" class="headstyle">
                 <h2>Community Fibre Support</h2>
                 <div class="close-chat">
                     <button onclick="minimizeFlagScreen(1)">
@@ -94,19 +97,31 @@
                     <div class="error-form" id="myText"></div>
                 </div>
                 <div class="form-control">
-                    <label id="emailLabel">Email*</label>
+                    <label id="fnameLabel">Last Name *</label>
+                    <input type="text" id="lname" name="lastname" placeholder="Doe"
+                        onchange="errorMessagesValidations()" required>
+                    <div class="error-form" id="lastNameText"></div>
+                </div>
+                <div class="form-control">
+                    <label id="fnameLabel">Phone *</label>
+                    <input class="phoneNum" type="tel" id="phone" name="phone" placeholder="e.g. 123456789"
+                        onchange="errorMessagesValidations()" required>
+                    <div class="error-form" id="phoneText"></div>
+                </div>
+                <div class="form-control">
+                    <label id="emailLabel">Email *</label>
                     <input type="text" id="email" name="Email" placeholder="e.g. john.smith@mail.com" class="fstName"
                         onchange="errorMessagesValidations()">
                     <span class="error-form" id="myText3"></span>
                 </div>
                 <div class="form-group">
-                    <label for="exampleFormControlSelect1">Topic*</label>
+                    <label for="exampleFormControlSelect1">Topic *</label>
                     <div id="topic">
                     </div>
                     <span class="error-form" id="myText4"></span>
                 </div>
                 <div class="form-group">
-                    <label for="exampleFormControlSelect1">Subject*</label>
+                    <label for="exampleFormControlSelect1">Subject *</label>
                     <div id="Subject"></div>
                     <span class="error-form" id="myText5"></span>
                     <!-- <div id="sales">
@@ -244,6 +259,12 @@
             </div>
         </div>
     </div>
+
+    <audio id="notificationSound" preload="auto">
+        <source src="./assets/audio/button-124476.mp3" type="audio/mpeg">
+        <!-- Add additional source elements for other audio formats (e.g., Ogg) -->
+      </audio>
+      
 
     <!-- Bootstrap core JS-->
     <script src="js/jquery.min.js"></script>

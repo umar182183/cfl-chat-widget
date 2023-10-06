@@ -162,6 +162,16 @@ function errorMessagesValidations() {
     else if (document.getElementById('fname').value == '') {
         document.getElementById("myText").innerHTML = 'Please include your name.';
     }
+    if (document.getElementById('lname').value != '')
+        document.getElementById("lastNameText").innerHTML = '';
+    else if (document.getElementById('lname').value == '') {
+        document.getElementById("lastNameText").innerHTML = 'Please include your last name.';
+    }
+    if (document.getElementById('phone').value != '')
+        document.getElementById("phoneText").innerHTML = '';
+    else if (document.getElementById('phone').value == '') {
+        document.getElementById("phoneText").innerHTML = 'Please include your phone.';
+    }
 }
 if (document.getElementById("fname")) {
     document.getElementById("fname").attachEvent("onchange", function () { //call function here} )
@@ -253,6 +263,7 @@ function hidethanks() {
         a.style.display = "none";
     }
     window.parent.postMessage('IframeWidthAdjusted', '*');
+    window.parent.postMessage('ChatMinimized', '*');
     localStorage.clear();
 }
 
@@ -287,6 +298,7 @@ function hide() {
 function minimizeForm() {
     try {
         window.parent.postMessage('IframeHeightMinimized', '*');
+        window.parent.postMessage('ChatMinimized', '*');
         var x = document.getElementById("myDIV");
         x.style.display = "none";
         var x = document.getElementById("showhide");
@@ -303,6 +315,7 @@ function minimizeForm() {
 function showChatForm() {
     setWorkingHours();
     window.parent.postMessage('IframeHeightMaximized', '*');
+    window.parent.postMessage('ChatExpanded', '*');
     // var x = document.getElementById("showhide");
     // x.style.display = "none";
     // x.style.opacity = 0;
@@ -312,21 +325,24 @@ function showChatForm() {
 }
 
 function endchatnow() {
-    try {
-        clearSession()
-        deleteRecordfromDBTable();
-        if (inAgentJoined) {
-            document.getElementById("Thanks").style.display = "block";
-            document.getElementById("myDIV").style.display = "none";
-            document.getElementById('phoneExtended').value = '';
-            window.parent.postMessage('IframeHeightMaximized', '*');
-        } else {
+    if (confirm('Are you sure you want to leave?')) {
+        try {
+            clearSession()
+            deleteRecordfromDBTable();
+            if (inAgentJoined) {
+                document.getElementById("Thanks").style.display = "block";
+                document.getElementById("myDIV").style.display = "none";
+                document.getElementById('phoneExtended').value = '';
+                window.parent.postMessage('IframeHeightMaximized', '*');
+                window.parent.postMessage('ChatExpanded', '*');
+            } else {
+                showChatIcon();
+                window.parent.postMessage('IframeWidthAdjusted', '*');
+            }
+        } catch (err) {
+            console.error(err)
             showChatIcon();
-            window.parent.postMessage('IframeWidthAdjusted', '*');
         }
-    } catch (err) {
-        console.error(err)
-        showChatIcon();
     }
 }
 
@@ -375,9 +391,10 @@ function submitme() {
     var email = '';
     var isfirstNameValid = false;
     var islastNameValid = false;
+    var isphoneValid = false;
     var isTopicValid = false;
     var isSubjectValid = false;
-    document.getElementById('phone').value = firstTimeDialCode;
+    // document.getElementById('phone').value = firstTimeDialCode;
     if (document.getElementById('fname').value != '') {
         firstName = document.getElementById('fname').value;
         isfirstNameValid = true;
@@ -408,7 +425,7 @@ function submitme() {
     if (document.getElementById('lname').value != '') {
         lastName = document.getElementById('lname').value;
         showError[1] = "";
-        document.getElementById("myText1").innerHTML = showError[1];
+        document.getElementById("lastNameText").innerHTML = showError[1];
         islastNameValid = true;
     } else {
         isTrue = true;
@@ -480,6 +497,37 @@ function submitme() {
 
     }
 
+    if ((document.getElementById('phone').value != '')) {
+        phone = document.getElementById('phone').value;
+        isphoneValid = true;
+        showError[4] = "";
+        //  document.getElementById("myText2").innerHTML = showError[2];
+        //document.getElementById('phone').placeholder = 'Phone: *';
+        showError[4] = "";
+        document.getElementById("phoneText").innerHTML = showError[4];
+
+    } 
+    else {
+        isphoneValid = false;
+        if (widgetLangauge == 'en') {
+            showError[4] = "Phone cannot be empty";
+        } else if (widgetLangauge == 'de') {
+            showError[4] = "Telefon darf nicht leer sein";
+        } else if (widgetLangauge == 'fr') {
+            showError[4] = "Le téléphone ne peut pas être vide";
+        } else if (widgetLangauge == 'fr-ca') {
+            showError[4] = "Le téléphone ne peut pas être vide";
+        } else if (widgetLangauge == 'es') {
+            showError[4] = "El teléfono no puede estar vacío";
+        } else if (widgetLangauge == 'es-mx') {
+            showError[4] = "El teléfono no puede estar vacío";
+        } else if (widgetLangauge == 'pt') {
+            showError[4] = "Telefone não pode estar vazio";
+        }
+        document.getElementById("phoneText").innerHTML = showError[4];
+
+    }
+
     if (document.getElementById('email').value != '' && ValidateEmail(document.getElementById('email').value)) {
         email = document.getElementById('email').value;
         isemailValid = true;
@@ -534,16 +582,16 @@ function submitme() {
         isValidSubject = true;
         document.getElementById("myText5").innerHTML = showError[4];
     }
-    if (!isfirstNameValid && !isemailValid && !isValidSubject && !isTopicValid) {
+    if (!isfirstNameValid && !islastNameValid && !isemailValid && !isValidSubject && !isTopicValid) {
         isTrue = true;
         showError[2] = "*";
         //  document.getElementById("myText2").innerHTML = showError[2];
         //document.getElementById('phone').placeholder = 'Phone: *';
     }
-    if (isfirstNameValid && isemailValid && isValidSubject && isTopicValid) {
+    if (isfirstNameValid && islastNameValid && isphoneValid && isemailValid && isValidSubject && isTopicValid) {
         //document.getElementById("flagContainer").style.display = "none";
         document.getElementById("flagContainer").style.display = "none";
-        connectChatMethods(firstName, email, selectedTopic, selectedSubject);
+        connectChatMethods(firstName, lastName, phone, email, selectedTopic, selectedSubject);
     }
     //else if (isTrue == true) {
     //     // alert('No way');
@@ -789,13 +837,15 @@ function getUserDataFromlocalStorage() {
     }
 }
 
-function connectChatMethods(pFirstName, pEmail, pTopic, pSubject) {
+function connectChatMethods(pFirstName, pLastName, pPhone, pEmail, pTopic, pSubject) {
+    var username = pFirstName+' '+pLastName;
     document.getElementById("disableEndChat").disabled = true;
     window.parent.postMessage({
         height: '567px',
         width: '100%'
     }, '*');
     window.parent.postMessage('IframeHeightMaximized', '*');
+    window.parent.postMessage('ChatExpanded', '*');
     let isChatActive = false;
     isChatActive = localStorage.getItem('chatActive');
     show();
@@ -814,20 +864,24 @@ function connectChatMethods(pFirstName, pEmail, pTopic, pSubject) {
     // console.log('detected widget language ', widgetLangauge);
     let customerAttributes =
         JSON.stringify({
-            "customerName": pFirstName,
+            "customerName": username,
             firstName: pFirstName,
+            lastName: pLastName,
+            phone: pPhone,
             email: pEmail,
             topic: pTopic,
             subject: pSubject,
-            enableAttachments: true,
+            enableAttachments: "true",
             // Src: source,
             // Message: widgetLangauge, //Detectedlanguage[4], //language
             LastBrowsedURL: parentUrl,
             customerId: customerName,
         })
     let newobje = connect.ChatInterface.initiateChat({
-        name: pFirstName,
-        username: pFirstName,
+        name: username,
+        username: username,
+        lastName: pLastName,
+        phone: pPhone,
         region: region,
         apiGatewayEndpoint: apiGatewayEndpoint,
         contactAttributes: customerAttributes,
@@ -925,6 +979,7 @@ function connectChatMethods(pFirstName, pEmail, pTopic, pSubject) {
         }
 
         chatSession.onIncoming(function (data) {
+            playNotificationSound();
             if (data.ContentType == "text/plain") {
                 transcript.push(data);
                 if (widgetLangauge == 'en') {
@@ -1062,6 +1117,7 @@ function logoConfigurations() {
 }
 
 function minimizeFlagScreen(value) {
+    window.parent.postMessage('ChatMinimized', '*');
     document.getElementById("myForm").style.display = "none";
     document.getElementById("flagContainer").style.display = "none";
     document.getElementById("myDIV").style.display = "none";
@@ -1072,7 +1128,14 @@ function minimizeFlagScreen(value) {
 }
 
 function expandContinueChat() {
+    window.parent.postMessage('ChatExpanded', '*');
     document.getElementById("myDIV").style.display = "block";
     document.getElementById("activeChat").style.display = "none";
     window.parent.postMessage('IframeHeightMaximized', '*');
 }
+
+function playNotificationSound() {
+    var audio = document.getElementById("notificationSound");
+    audio.play();
+}
+  
