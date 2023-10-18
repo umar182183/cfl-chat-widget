@@ -15,6 +15,8 @@ let Successsession = '';
 let firstTimeDialCode = '';
 let isemailValid = false;
 let inAgentJoined = false;
+var isAnonymousChat = true;
+
 $(document).ready(() => {
     $('input').each(function (i, item) {
         ids.push(item.id)
@@ -394,210 +396,216 @@ function submitme() {
     var isphoneValid = false;
     var isTopicValid = false;
     var isSubjectValid = false;
-    // document.getElementById('phone').value = firstTimeDialCode;
-    if (document.getElementById('fname').value != '') {
-        firstName = document.getElementById('fname').value;
-        isfirstNameValid = true;
-        showError[0] = "";
-        document.getElementById("myText").innerHTML = showError[0];
-    } else {
-        if (widgetLangauge == 'en') {
-            showError[0] = "Please include your name.";
-        } else if (widgetLangauge == 'de') {
-            showError[0] = "Vorname darf nicht leer sein";
-        } else if (widgetLangauge == 'fr') {
-            showError[0] = "Le prénom ne peut pas être vide";
-        } else if (widgetLangauge == 'fr-ca') {
-            showError[0] = "Le prénom ne peut pas être vide";
-        } else if (widgetLangauge == 'es') {
-            showError[0] = "El nombre no puede estar vacío";
-        } else if (widgetLangauge == 'es-mx') {
-            showError[0] = "El nombre no puede estar vacío";
-        } else if (widgetLangauge == 'pt') {
-            showError[0] = "O primeiro nome não pode estar vazio";
-        } else {
-            showError[0] = "First Name cannot be empty";
-        }
-        //document.getElementById('fname').placeholder = 'First Name: *'
-        document.getElementById("myText").innerHTML = showError[0];
-        isfirstNameValid = false;
-    }
-    if (document.getElementById('lname').value != '') {
-        lastName = document.getElementById('lname').value;
-        showError[1] = "";
-        document.getElementById("lastNameText").innerHTML = showError[1];
-        islastNameValid = true;
-    } else {
-        isTrue = true;
-        islastNameValid = false;
-        if (widgetLangauge == 'en') {
-            showError[1] = "Last Name cannot be empty";
-        } else if (widgetLangauge == 'de') {
-            showError[1] = "Nachname darf nicht leer sein";
-        } else if (widgetLangauge == 'fr') {
-            showError[1] = "Le nom de famille ne peut pas être vide";
-        } else if (widgetLangauge == 'fr-ca') {
-            showError[1] = "Le nom de famille ne peut pas être vide";
-        } else if (widgetLangauge == 'es') {
-            showError[1] = "El apellido no puede estar vacío";
-        } else if (widgetLangauge == 'es-mx') {
-            showError[1] = "El apellido no puede estar vacío";
-        } else if (widgetLangauge == 'pt') {
-            showError[1] = "O sobrenome não pode estar vazio";
-        }
-        //document.getElementById('lname').placeholder = 'Last Name: *'
-        document.getElementById("myText1").innerHTML = showError[1];
-    }
-    if ((document.getElementById('phone').value != '' && document.getElementById('phoneExtended').value != '') && (phonenumber(document.getElementById('phone').value + document.getElementById('phoneExtended').value))) {
-        phone = document.getElementById('phone').value + document.getElementById('phoneExtended').value;
-        isphoneValid = true;
-        showError[4] = "";
-        //  document.getElementById("myText2").innerHTML = showError[2];
-        //document.getElementById('phone').placeholder = 'Phone: *';
-        showError[4] = "";
-        document.getElementById("myText4").innerHTML = showError[4];
-
-    } else if ((document.getElementById('phone').value != '' && document.getElementById('phoneExtended').value != '') && (phonenumber(document.getElementById('phone').value + document.getElementById('phoneExtended').value))) {
-
-        isphoneValid = false;
-        if (widgetLangauge == 'en') {
-            showError[4] = "Please include your email address.";
-        } else if (widgetLangauge == 'de') {
-            showError[4] = "Ungültiges Telefon";
-        } else if (widgetLangauge == 'fr') {
-            showError[4] = "Téléphone invalide";
-        } else if (widgetLangauge == 'fr-ca') {
-            showError[4] = "Téléphone invalide";
-        } else if (widgetLangauge == 'es') {
-            showError[4] = "Teléfono inválido";
-        } else if (widgetLangauge == 'es-mx') {
-            showError[4] = "Teléfono inválido";
-        } else if (widgetLangauge == 'pt') {
-            showError[4] = "Telefone inválido";
-        }
-        document.getElementById("myText4").innerHTML = showError[4];
-
-    } else {
-        if (widgetLangauge == 'en') {
-            showError[4] = "Phone cannot be empty";
-        } else if (widgetLangauge == 'de') {
-            showError[4] = "Telefon darf nicht leer sein";
-        } else if (widgetLangauge == 'fr') {
-            showError[4] = "Le téléphone ne peut pas être vide";
-        } else if (widgetLangauge == 'fr-ca') {
-            showError[4] = "Le téléphone ne peut pas être vide";
-        } else if (widgetLangauge == 'es') {
-            showError[4] = "El teléfono no puede estar vacío";
-        } else if (widgetLangauge == 'es-mx') {
-            showError[4] = "El teléfono no puede estar vacío";
-        } else if (widgetLangauge == 'pt') {
-            showError[4] = "Telefone não pode estar vazio";
-        }
-        document.getElementById("myText4").innerHTML = showError[4];
-
-    }
-
-    if ((document.getElementById('phone').value != '')) {
-        phone = document.getElementById('phone').value;
-        isphoneValid = true;
-        showError[4] = "";
-        //  document.getElementById("myText2").innerHTML = showError[2];
-        //document.getElementById('phone').placeholder = 'Phone: *';
-        showError[4] = "";
-        document.getElementById("phoneText").innerHTML = showError[4];
-
+    debugger
+    if (isAnonymousChat) {
+        connectChatMethods(firstName, lastName, phone, email, selectedTopic, selectedSubject, isAnonymousChat);
     } 
     else {
-        isphoneValid = false;
-        if (widgetLangauge == 'en') {
-            showError[4] = "Phone cannot be empty";
-        } else if (widgetLangauge == 'de') {
-            showError[4] = "Telefon darf nicht leer sein";
-        } else if (widgetLangauge == 'fr') {
-            showError[4] = "Le téléphone ne peut pas être vide";
-        } else if (widgetLangauge == 'fr-ca') {
-            showError[4] = "Le téléphone ne peut pas être vide";
-        } else if (widgetLangauge == 'es') {
-            showError[4] = "El teléfono no puede estar vacío";
-        } else if (widgetLangauge == 'es-mx') {
-            showError[4] = "El teléfono no puede estar vacío";
-        } else if (widgetLangauge == 'pt') {
-            showError[4] = "Telefone não pode estar vazio";
-        }
-        document.getElementById("phoneText").innerHTML = showError[4];
-
-    }
-
-    if (document.getElementById('email').value != '' && ValidateEmail(document.getElementById('email').value)) {
-        email = document.getElementById('email').value;
-        isemailValid = true;
-        showError[2] = '';
-        document.getElementById("myText3").innerHTML = showError[2];
-    } else if (document.getElementById('email').value != '') {
-        isemailValid = false;
-        if (widgetLangauge == 'en') {
-            showError[2] = "Invalid email";
-        } else if (widgetLangauge == 'de') {
-            showError[2] = "Ungültige E-Mail";
-        } else if (widgetLangauge == 'fr') {
-            showError[2] = "Email invalide";
-        } else if (widgetLangauge == 'fr-ca') {
-            showError[2] = "Email invalide";
-        } else if (widgetLangauge == 'es') {
-            showError[2] = "Correo electrónico inválido";
-        } else if (widgetLangauge == 'es-mx') {
-            showError[2] = "Correo electrónico inválido";
-        } else if (widgetLangauge == 'pt') {
-            showError[2] = "E-mail inválido";
+        // document.getElementById('phone').value = firstTimeDialCode;
+        if (document.getElementById('fname').value != '') {
+            firstName = document.getElementById('fname').value;
+            isfirstNameValid = true;
+            showError[0] = "";
+            document.getElementById("myText").innerHTML = showError[0];
         } else {
-            showError[2] = "Invalid email";
+            if (widgetLangauge == 'en') {
+                showError[0] = "Please include your name.";
+            } else if (widgetLangauge == 'de') {
+                showError[0] = "Vorname darf nicht leer sein";
+            } else if (widgetLangauge == 'fr') {
+                showError[0] = "Le prénom ne peut pas être vide";
+            } else if (widgetLangauge == 'fr-ca') {
+                showError[0] = "Le prénom ne peut pas être vide";
+            } else if (widgetLangauge == 'es') {
+                showError[0] = "El nombre no puede estar vacío";
+            } else if (widgetLangauge == 'es-mx') {
+                showError[0] = "El nombre no puede estar vacío";
+            } else if (widgetLangauge == 'pt') {
+                showError[0] = "O primeiro nome não pode estar vazio";
+            } else {
+                showError[0] = "First Name cannot be empty";
+            }
+            //document.getElementById('fname').placeholder = 'First Name: *'
+            document.getElementById("myText").innerHTML = showError[0];
+            isfirstNameValid = false;
         }
-        document.getElementById("myText3").innerHTML = showError[2];
-    } else if (document.getElementById('email').value == '') {
-        showError[2] = 'Please include your email address.';
-        document.getElementById("myText3").innerHTML = showError[2];
-
-    } else {
-        showError[2] = "";
-        document.getElementById("myText3").innerHTML = showError[2];
+        if (document.getElementById('lname').value != '') {
+            lastName = document.getElementById('lname').value;
+            showError[1] = "";
+            document.getElementById("lastNameText").innerHTML = showError[1];
+            islastNameValid = true;
+        } else {
+            isTrue = true;
+            islastNameValid = false;
+            if (widgetLangauge == 'en') {
+                showError[1] = "Last Name cannot be empty";
+            } else if (widgetLangauge == 'de') {
+                showError[1] = "Nachname darf nicht leer sein";
+            } else if (widgetLangauge == 'fr') {
+                showError[1] = "Le nom de famille ne peut pas être vide";
+            } else if (widgetLangauge == 'fr-ca') {
+                showError[1] = "Le nom de famille ne peut pas être vide";
+            } else if (widgetLangauge == 'es') {
+                showError[1] = "El apellido no puede estar vacío";
+            } else if (widgetLangauge == 'es-mx') {
+                showError[1] = "El apellido no puede estar vacío";
+            } else if (widgetLangauge == 'pt') {
+                showError[1] = "O sobrenome não pode estar vazio";
+            }
+            //document.getElementById('lname').placeholder = 'Last Name: *'
+            document.getElementById("myText1").innerHTML = showError[1];
+        }
+        if ((document.getElementById('phone').value != '' && document.getElementById('phoneExtended').value != '') && (phonenumber(document.getElementById('phone').value + document.getElementById('phoneExtended').value))) {
+            phone = document.getElementById('phone').value + document.getElementById('phoneExtended').value;
+            isphoneValid = true;
+            showError[4] = "";
+            //  document.getElementById("myText2").innerHTML = showError[2];
+            //document.getElementById('phone').placeholder = 'Phone: *';
+            showError[4] = "";
+            document.getElementById("myText4").innerHTML = showError[4];
+    
+        } else if ((document.getElementById('phone').value != '' && document.getElementById('phoneExtended').value != '') && (phonenumber(document.getElementById('phone').value + document.getElementById('phoneExtended').value))) {
+    
+            isphoneValid = false;
+            if (widgetLangauge == 'en') {
+                showError[4] = "Please include your email address.";
+            } else if (widgetLangauge == 'de') {
+                showError[4] = "Ungültiges Telefon";
+            } else if (widgetLangauge == 'fr') {
+                showError[4] = "Téléphone invalide";
+            } else if (widgetLangauge == 'fr-ca') {
+                showError[4] = "Téléphone invalide";
+            } else if (widgetLangauge == 'es') {
+                showError[4] = "Teléfono inválido";
+            } else if (widgetLangauge == 'es-mx') {
+                showError[4] = "Teléfono inválido";
+            } else if (widgetLangauge == 'pt') {
+                showError[4] = "Telefone inválido";
+            }
+            document.getElementById("myText4").innerHTML = showError[4];
+    
+        } else {
+            if (widgetLangauge == 'en') {
+                showError[4] = "Phone cannot be empty";
+            } else if (widgetLangauge == 'de') {
+                showError[4] = "Telefon darf nicht leer sein";
+            } else if (widgetLangauge == 'fr') {
+                showError[4] = "Le téléphone ne peut pas être vide";
+            } else if (widgetLangauge == 'fr-ca') {
+                showError[4] = "Le téléphone ne peut pas être vide";
+            } else if (widgetLangauge == 'es') {
+                showError[4] = "El teléfono no puede estar vacío";
+            } else if (widgetLangauge == 'es-mx') {
+                showError[4] = "El teléfono no puede estar vacío";
+            } else if (widgetLangauge == 'pt') {
+                showError[4] = "Telefone não pode estar vazio";
+            }
+            document.getElementById("myText4").innerHTML = showError[4];
+    
+        }
+    
+        if ((document.getElementById('phone').value != '')) {
+            phone = document.getElementById('phone').value;
+            isphoneValid = true;
+            showError[4] = "";
+            //  document.getElementById("myText2").innerHTML = showError[2];
+            //document.getElementById('phone').placeholder = 'Phone: *';
+            showError[4] = "";
+            document.getElementById("phoneText").innerHTML = showError[4];
+    
+        } 
+        else {
+            isphoneValid = false;
+            if (widgetLangauge == 'en') {
+                showError[4] = "Phone cannot be empty";
+            } else if (widgetLangauge == 'de') {
+                showError[4] = "Telefon darf nicht leer sein";
+            } else if (widgetLangauge == 'fr') {
+                showError[4] = "Le téléphone ne peut pas être vide";
+            } else if (widgetLangauge == 'fr-ca') {
+                showError[4] = "Le téléphone ne peut pas être vide";
+            } else if (widgetLangauge == 'es') {
+                showError[4] = "El teléfono no puede estar vacío";
+            } else if (widgetLangauge == 'es-mx') {
+                showError[4] = "El teléfono no puede estar vacío";
+            } else if (widgetLangauge == 'pt') {
+                showError[4] = "Telefone não pode estar vazio";
+            }
+            document.getElementById("phoneText").innerHTML = showError[4];
+    
+        }
+    
+        if (document.getElementById('email').value != '' && ValidateEmail(document.getElementById('email').value)) {
+            email = document.getElementById('email').value;
+            isemailValid = true;
+            showError[2] = '';
+            document.getElementById("myText3").innerHTML = showError[2];
+        } else if (document.getElementById('email').value != '') {
+            isemailValid = false;
+            if (widgetLangauge == 'en') {
+                showError[2] = "Invalid email";
+            } else if (widgetLangauge == 'de') {
+                showError[2] = "Ungültige E-Mail";
+            } else if (widgetLangauge == 'fr') {
+                showError[2] = "Email invalide";
+            } else if (widgetLangauge == 'fr-ca') {
+                showError[2] = "Email invalide";
+            } else if (widgetLangauge == 'es') {
+                showError[2] = "Correo electrónico inválido";
+            } else if (widgetLangauge == 'es-mx') {
+                showError[2] = "Correo electrónico inválido";
+            } else if (widgetLangauge == 'pt') {
+                showError[2] = "E-mail inválido";
+            } else {
+                showError[2] = "Invalid email";
+            }
+            document.getElementById("myText3").innerHTML = showError[2];
+        } else if (document.getElementById('email').value == '') {
+            showError[2] = 'Please include your email address.';
+            document.getElementById("myText3").innerHTML = showError[2];
+    
+        } else {
+            showError[2] = "";
+            document.getElementById("myText3").innerHTML = showError[2];
+        }
+        //For Topic Selection
+        if (selectedTopic == '' || selectedTopic.includes('select a topic')) {
+            isTopicValid = false;
+            showError[4] = "Please select a topic.";
+            document.getElementById("myText4").innerHTML = showError[4];
+    
+        } else {
+            showError[4] = "";
+            isTopicValid = true;
+            document.getElementById("myText4").innerHTML = showError[4];
+        }
+        if (selectedSubject == '' || selectedSubject.includes('select a subject')) {
+            showError[4] = "Please include a subject.";
+            isValidSubject = false;
+            document.getElementById("myText5").innerHTML = showError[4];
+    
+        } else {
+            showError[4] = "";
+            isValidSubject = true;
+            document.getElementById("myText5").innerHTML = showError[4];
+        }
+        if (!isfirstNameValid && !islastNameValid && !isemailValid && !isValidSubject && !isTopicValid) {
+            isTrue = true;
+            showError[2] = "*";
+            //  document.getElementById("myText2").innerHTML = showError[2];
+            //document.getElementById('phone').placeholder = 'Phone: *';
+        }
+        if (isfirstNameValid && islastNameValid && isphoneValid && isemailValid && isValidSubject && isTopicValid) {
+            //document.getElementById("flagContainer").style.display = "none";
+            document.getElementById("flagContainer").style.display = "none";
+            connectChatMethods(firstName, lastName, phone, email, selectedTopic, selectedSubject, isAnonymousChat);
+        }
+        //else if (isTrue == true) {
+        //     // alert('No way');
+        //     if (document.getElementById('phone').value && document.getElementById('phoneExtended').value && document.getElementById('email').value)
+        //         document.getElementById("phone").required = true;
+        // }
     }
-    //For Topic Selection
-    if (selectedTopic == '' || selectedTopic.includes('select a topic')) {
-        isTopicValid = false;
-        showError[4] = "Please select a topic.";
-        document.getElementById("myText4").innerHTML = showError[4];
-
-    } else {
-        showError[4] = "";
-        isTopicValid = true;
-        document.getElementById("myText4").innerHTML = showError[4];
-    }
-    if (selectedSubject == '' || selectedSubject.includes('select a subject')) {
-        showError[4] = "Please include a subject.";
-        isValidSubject = false;
-        document.getElementById("myText5").innerHTML = showError[4];
-
-    } else {
-        showError[4] = "";
-        isValidSubject = true;
-        document.getElementById("myText5").innerHTML = showError[4];
-    }
-    if (!isfirstNameValid && !islastNameValid && !isemailValid && !isValidSubject && !isTopicValid) {
-        isTrue = true;
-        showError[2] = "*";
-        //  document.getElementById("myText2").innerHTML = showError[2];
-        //document.getElementById('phone').placeholder = 'Phone: *';
-    }
-    if (isfirstNameValid && islastNameValid && isphoneValid && isemailValid && isValidSubject && isTopicValid) {
-        //document.getElementById("flagContainer").style.display = "none";
-        document.getElementById("flagContainer").style.display = "none";
-        connectChatMethods(firstName, lastName, phone, email, selectedTopic, selectedSubject);
-    }
-    //else if (isTrue == true) {
-    //     // alert('No way');
-    //     if (document.getElementById('phone').value && document.getElementById('phoneExtended').value && document.getElementById('email').value)
-    //         document.getElementById("phone").required = true;
-    // }
 }
 
 function SendMessage() {
@@ -605,6 +613,7 @@ function SendMessage() {
 }
 
 function failureHandler(error) {
+    debugger
     // chat failed
     document.getElementById("disableEndChat").disabled = false;
 }
@@ -837,8 +846,12 @@ function getUserDataFromlocalStorage() {
     }
 }
 
-function connectChatMethods(pFirstName, pLastName, pPhone, pEmail, pTopic, pSubject) {
-    var username = pFirstName+' '+pLastName;
+function connectChatMethods(pFirstName, pLastName, pPhone, pEmail, pTopic, pSubject, isAnonymousChat) {
+    debugger
+    var username = '';
+    if (!isAnonymousChat) {
+        username = pFirstName+' '+pLastName;
+    }
     document.getElementById("disableEndChat").disabled = true;
     window.parent.postMessage({
         height: '567px',
@@ -850,7 +863,7 @@ function connectChatMethods(pFirstName, pLastName, pPhone, pEmail, pTopic, pSubj
     isChatActive = localStorage.getItem('chatActive');
     show();
     closeFormDuringChat();
-    if (isChatActive == "true") {
+    if (!isAnonymousChat && isChatActive == "true") {
         firstName = localStorage.getItem('firstName');
         lastName = localStorage.getItem('lastName');
         phone = localStorage.getItem('phone');
@@ -862,8 +875,10 @@ function connectChatMethods(pFirstName, pLastName, pPhone, pEmail, pTopic, pSubj
     // console.log("Fname ", firstName, lastName, phone, email);
     // console.log('last browse url for api ', parentUrl);
     // console.log('detected widget language ', widgetLangauge);
-    let customerAttributes =
-        JSON.stringify({
+    let custmrAttrObj = {};
+    let custmrInfoObj = {};
+    if (!isAnonymousChat) {
+        custmrAttrObj = {
             "customerName": username,
             firstName: pFirstName,
             lastName: pLastName,
@@ -871,6 +886,35 @@ function connectChatMethods(pFirstName, pLastName, pPhone, pEmail, pTopic, pSubj
             email: pEmail,
             topic: pTopic,
             subject: pSubject,
+        };
+        custmrInfoObj = {
+            name: username,
+            username: username,
+            lastName: pLastName,
+            phone: pPhone,
+            region: region,
+        }
+    } else {
+        custmrAttrObj = {
+            "customerName": "",
+            firstName: "",
+            lastName: "",
+            phone: "",
+            email: "",
+            topic: "",
+            subject: "",
+        };
+        custmrInfoObj = {
+            name: "",
+            username: "",
+            lastName: "",
+            phone: "",
+            region: "",
+        }
+    }
+    let customerAttributes =
+        JSON.stringify({
+            ...custmrAttrObj,
             enableAttachments: "true",
             // Src: source,
             // Message: widgetLangauge, //Detectedlanguage[4], //language
@@ -878,11 +922,7 @@ function connectChatMethods(pFirstName, pLastName, pPhone, pEmail, pTopic, pSubj
             customerId: customerName,
         })
     let newobje = connect.ChatInterface.initiateChat({
-        name: username,
-        username: username,
-        lastName: pLastName,
-        phone: pPhone,
-        region: region,
+        ...custmrInfoObj,
         apiGatewayEndpoint: apiGatewayEndpoint,
         contactAttributes: customerAttributes,
         contactFlowId: contactFlowId,
