@@ -266,6 +266,7 @@ function hidethanks() {
     }
     window.parent.postMessage('IframeWidthAdjusted', '*');
     window.parent.postMessage('ChatMinimized', '*');
+     
     localStorage.clear();
 }
 
@@ -304,6 +305,7 @@ function minimizeForm() {
         var x = document.getElementById("myDIV");
         x.style.display = "none";
         var x = document.getElementById("showhide");
+        document.getElementById("ch-notifi-id").classList.remove('ch-notifi');
         x.style.display = "none";
         document.getElementById("flagContainer").style.display = "none";
         document.getElementById("activeChat").style.display = "block";
@@ -349,6 +351,7 @@ function endchatnow() {
 }
 
 function clearSession() {
+     
     try{
     if (chatSession)
         chatSession.endChat(function () {
@@ -364,11 +367,13 @@ function showChatIcon() {
     document.getElementById("myDIV").style.display = "none";
 }
 window.onbeforeunload = function () {
+     
     clearSession();
     clearStorage();
 }
 
 function clearStorage() {
+     
     localStorage.setItem('chatActive', false);
     localStorage.removeItem('firstName');
     localStorage.removeItem('lastName');
@@ -396,8 +401,8 @@ function submitme() {
     var isphoneValid = false;
     var isTopicValid = false;
     var isSubjectValid = false;
-    debugger
     if (isAnonymousChat) {
+        // document.getElementById("flagContainer").style.display = "none";
         connectChatMethods(firstName, lastName, phone, email, selectedTopic, selectedSubject, isAnonymousChat);
     } 
     else {
@@ -613,7 +618,6 @@ function SendMessage() {
 }
 
 function failureHandler(error) {
-    debugger
     // chat failed
     document.getElementById("disableEndChat").disabled = false;
 }
@@ -826,7 +830,7 @@ function phonenumber(inputtxt) {
 
 function getUserDataFromlocalStorage() {
     let isChatActive = false;
-
+ 
     isChatActive = localStorage.getItem('chatActive');
     let chatStartTime = localStorage.getItem('chatExpirytime');
     let chatStartTimetemp = new Date(chatStartTime);
@@ -847,11 +851,11 @@ function getUserDataFromlocalStorage() {
 }
 
 function connectChatMethods(pFirstName, pLastName, pPhone, pEmail, pTopic, pSubject, isAnonymousChat) {
-    debugger
     var username = '';
     if (!isAnonymousChat) {
         username = pFirstName+' '+pLastName;
-    }
+    } 
+    
     document.getElementById("disableEndChat").disabled = true;
     window.parent.postMessage({
         height: '567px',
@@ -863,7 +867,7 @@ function connectChatMethods(pFirstName, pLastName, pPhone, pEmail, pTopic, pSubj
     isChatActive = localStorage.getItem('chatActive');
     show();
     closeFormDuringChat();
-    if (!isAnonymousChat && isChatActive == "true") {
+    if (isChatActive == "true") {
         firstName = localStorage.getItem('firstName');
         lastName = localStorage.getItem('lastName');
         phone = localStorage.getItem('phone');
@@ -876,10 +880,11 @@ function connectChatMethods(pFirstName, pLastName, pPhone, pEmail, pTopic, pSubj
     // console.log('last browse url for api ', parentUrl);
     // console.log('detected widget language ', widgetLangauge);
     let custmrAttrObj = {};
-    let custmrInfoObj = {};
+    let custmrInfoObj = {
+    };
     if (!isAnonymousChat) {
         custmrAttrObj = {
-            "customerName": username,
+            customerName: username,
             firstName: pFirstName,
             lastName: pLastName,
             phone: pPhone,
@@ -892,24 +897,6 @@ function connectChatMethods(pFirstName, pLastName, pPhone, pEmail, pTopic, pSubj
             username: username,
             lastName: pLastName,
             phone: pPhone,
-            region: region,
-        }
-    } else {
-        custmrAttrObj = {
-            "customerName": "",
-            firstName: "",
-            lastName: "",
-            phone: "",
-            email: "",
-            topic: "",
-            subject: "",
-        };
-        custmrInfoObj = {
-            name: "",
-            username: "",
-            lastName: "",
-            phone: "",
-            region: "",
         }
     }
     let customerAttributes =
@@ -923,6 +910,7 @@ function connectChatMethods(pFirstName, pLastName, pPhone, pEmail, pTopic, pSubj
         })
     let newobje = connect.ChatInterface.initiateChat({
         ...custmrInfoObj,
+        region: region,
         apiGatewayEndpoint: apiGatewayEndpoint,
         contactAttributes: customerAttributes,
         contactFlowId: contactFlowId,
@@ -931,7 +919,9 @@ function connectChatMethods(pFirstName, pLastName, pPhone, pEmail, pTopic, pSubj
         featurePermissions: {
             "ATTACHMENTS": true,
         }
-    }, successHandler, failureHandler)
+    }, successHandler, failureHandler);
+    document.getElementById("showhide").style.display = "none";
+
     transcript.push({
         AbsoluteTime: Date.now(),
         ContactId: "54611e31-0c70-47a3-a70b-48cdc8bea9b3",
@@ -956,6 +946,8 @@ function connectChatMethods(pFirstName, pLastName, pPhone, pEmail, pTopic, pSubj
         document.getElementById("disableEndChat").disabled = false;
         //Change the incoming data set
         chatSession.incomingItemDecorator = function (item) {
+        document.getElementById("ch-notifi-id").classList.add('ch-notifi');
+             
             if (["SYSTEM_MESSAGE"].indexOf(item.displayName) !== -1) {
                 if (widgetLangauge == 'en') {
                     item.displayName = "CFL Support";
@@ -1093,6 +1085,7 @@ function connectChatMethods(pFirstName, pLastName, pPhone, pEmail, pTopic, pSubj
         chatSession.onChatDisconnected(function (data) {
             //document.getElementById("Thanks").style.display = "block";
             //hide();
+             
             localStorage.clear();
             localStorage.setItem("activeChat", false);
         });
@@ -1125,6 +1118,7 @@ function connectChatMethods(pFirstName, pLastName, pPhone, pEmail, pTopic, pSubj
 
 function deleteRecordfromDBTable() {
     try {
+         
         clearStorage();
         let body = {
             "contactId": ContactIdd
@@ -1172,6 +1166,7 @@ function expandContinueChat() {
     document.getElementById("myDIV").style.display = "block";
     document.getElementById("activeChat").style.display = "none";
     window.parent.postMessage('IframeHeightMaximized', '*');
+    document.getElementById("ch-notifi-id").classList.remove('ch-notifi');
 }
 
 function playNotificationSound() {
@@ -1179,3 +1174,15 @@ function playNotificationSound() {
     audio.play();
 }
   
+if (performance.getEntriesByType("navigation")[0].type == "reload") {
+    // Page was reloaded
+    //  
+    // let isChatActive = JSON.parse(localStorage.getItem('chatActive'));
+    // if (isChatActive) {
+    //     endchatnow();
+    // }
+    // console.log("Page was reloaded");
+} else {
+    // Page was loaded for the first time or via navigation (not a reload)
+    // console.log("Page was not reloaded");
+}

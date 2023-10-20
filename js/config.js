@@ -92,7 +92,7 @@ let endingHours = 20;
  let defaultLanguage = ""; //For Default Language and bypass Flags screen
  let source = "WEB"; //Source either MOBILE/WEB
  let logoImage = "02-Dialect_White_logo.png";
- let headersColor="#10D4A4 "; //Color configurations for headers background and button colors
+ let headersColor="#17AB33 "; //Color configurations for headers background and button colors
  let textColor="white"; // Color configurations for headers text color
  let languages = [
     { langCode : "de",

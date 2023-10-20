@@ -18,7 +18,7 @@ topics.forEach((item, index) => {
     option.innerHTML = item.name;
     selectList.appendChild(option);
 });
-topic.appendChild(selectList);
+topic?.appendChild(selectList);
 
 
 function clearErrorMessages() {
