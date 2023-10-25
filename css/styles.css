@@ -453,6 +453,14 @@ button:focus {
     margin: 0;
 }
 
+.headstyle:hover, .submitbutton:hover, .endchatbutton:hover{
+    background: #12932B !important;
+}
+
+.close-update-btn:hover{
+    background-color: #12932B;
+}
+
 
 .close-chat {
     display: flex;

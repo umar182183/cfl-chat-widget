@@ -305,7 +305,9 @@ function minimizeForm() {
         var x = document.getElementById("myDIV");
         x.style.display = "none";
         var x = document.getElementById("showhide");
-        document.getElementById("ch-notifi-id").classList.remove('ch-notifi');
+        let notificationSpan = document.getElementById("ch-notifi-id");
+        notificationSpan.classList.remove('ch-notifi');
+        notificationSpan.style.display = "none";
         x.style.display = "none";
         document.getElementById("flagContainer").style.display = "none";
         document.getElementById("activeChat").style.display = "block";
@@ -946,7 +948,9 @@ function connectChatMethods(pFirstName, pLastName, pPhone, pEmail, pTopic, pSubj
         document.getElementById("disableEndChat").disabled = false;
         //Change the incoming data set
         chatSession.incomingItemDecorator = function (item) {
-        document.getElementById("ch-notifi-id").classList.add('ch-notifi');
+            let notificationSpan = document.getElementById("ch-notifi-id");
+            notificationSpan.style.display = "block";
+            notificationSpan.classList.add('ch-notifi');
              
             if (["SYSTEM_MESSAGE"].indexOf(item.displayName) !== -1) {
                 if (widgetLangauge == 'en') {
@@ -1166,7 +1170,9 @@ function expandContinueChat() {
     document.getElementById("myDIV").style.display = "block";
     document.getElementById("activeChat").style.display = "none";
     window.parent.postMessage('IframeHeightMaximized', '*');
-    document.getElementById("ch-notifi-id").classList.remove('ch-notifi');
+    let notificationSpan = document.getElementById("ch-notifi-id");
+    notificationSpan.classList.remove('ch-notifi');
+    notificationSpan.style.display = "none";
 }
 
 function playNotificationSound() {
